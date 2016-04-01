@@ -32,9 +32,23 @@ def register():
         new_user=User(email=email,name=name,password=password)
         db.session.add(new_user)
         db.session.commit()
-        obj={'error':'null','data':{'token':'blank','expires':'time','user':{'id':new_user.get_id(),'email':new_user.email,'name':new_user.name}},'message':'Success'}
+        obj={'error':'null','data':{'token':'blank','expires':'time','user':{'id':new_user.get_id(),'email':new_user.email,'name':new_user.name},},'message':'Success'}
         return jsonify(obj)
 
+
+@app.route('/api/user/login',methods=['POST'])
+def login():
+    if request.method=='POST':
+        email=request.form['email']
+        password=request.form['password']
+        user=User.query.get(email)
+        if password==user.password:
+            obj={'error':'null','data':{'token':'blank for now','expires':'time','user':{'id':user.user_id,'email':user.email,'name':user.name},},'message':'Sucess'}
+            return jsonify(obj)
+        else:
+            obj={'error':'1','data':{},'message':'Bad username or password'}
+            return jsonify(obj)
+        
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True, port=8080)

@@ -1,4 +1,4 @@
-from app import app
+from app import app,db
 from flask import Flask, abort, request, jsonify, g, url_for, render_template
 import requests
 from image_getter import image_dem
@@ -29,9 +29,11 @@ def register():
         name=request.form['name']
         email=request.form['email']
         password=request.form['password']
-        new_user=User(name=name,email=email,password=password)
-
-
+        new_user=User(email=email,name=name,password=password)
+        db.session.add(new_user)
+        db.session.commit()
+        obj={'error':'null','data':{'token':'blank','expires':'time','user':{'id':new_user.get_id(),'email':new_user.email,'name':new_user.name}},'message':'Success'}
+        return jsonify(obj)
 
 
 if __name__ == '__main__':

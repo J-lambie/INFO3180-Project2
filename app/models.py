@@ -4,7 +4,7 @@ class User(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     email=db.Column(db.String(80))
     name = db.Column(db.String(80))     
-    last_name = db.Column(db.String(80)) 
+    password= db.Column(db.String(80)) 
     image=db.Column(db.String(80))
 
     def is_authenticated(self):
@@ -18,9 +18,9 @@ class User(db.Model):
 
     def get_id(self):
         try:
-            return unicode(self.id)  # python 2 support
+            return unicode(self.user_id)  # python 2 support
         except NameError:
-            return str(self.id)  # python 3 support
+            return str(self.user_id)  # python 3 support
 
     def __repr__(self):
         return '<User %r>' % (self.first_name)

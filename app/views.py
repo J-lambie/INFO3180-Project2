@@ -41,7 +41,7 @@ def login():
     if request.method=='POST':
         email=request.form['email']
         password=request.form['password']
-        user=User.query.get(email)
+        user=User.query.filter(User.email==email).first()
         if password==user.password:
             obj={'error':'null','data':{'token':'blank for now','expires':'time','user':{'id':user.user_id,'email':user.email,'name':user.name},},'message':'Sucess'}
             return jsonify(obj)

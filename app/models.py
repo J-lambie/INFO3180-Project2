@@ -27,12 +27,12 @@ class User(db.Model):
         
 class Wishlist(db.Model):
     __tablename__='wishlist'
-    id=db.Column(db.Integer, primary_key=True)
+    wishlist_id=db.Column(db.Integer, primary_key=True)
     user_id=db.Column(db.Integer,db.ForeignKey('user.user_id'))
     title=db.Column(db.String(80))
     url=db.Column(db.String(100))
     description=db.Column(db.String(250))
-    img_url=db.Column(db.String(100))
+    thumbnail=db.Column(db.String(100))
     
 
 

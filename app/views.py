@@ -2,7 +2,7 @@ from app import app,db
 from flask import Flask, abort, request, jsonify, g, url_for, render_template
 import requests
 from image_getter import image_dem
-from models import User
+from models import User,Wishlist
 
 @app.route('/')
 def home():
@@ -49,6 +49,25 @@ def login():
             obj={'error':'1','data':{},'message':'Bad username or password'}
             return jsonify(obj)
         
+@app.route('/api/user/<int:id>/wishlist',methods=['POST','GET'])
+def wishlist(id):
+    if request.method=='POST':
+        title=request.form['email']
+        description=request.form['description']
+        url=request.form['url']
+        thumbnail=request.form['thumbnail']
+        obj={'error':'null','data':{'wishes':{'title':title,'description':description,'url':url,'thumbnail':thumbnail},'message':'sucess'},}
+        new_wishlist=Wishlist(title=title,description=description,url=url,thumbnail=thumbnail)
+        db.session.add(new_wishlist)
+        db.session.commit()
+        return jsonify(obj)
+    if request.method=='GET':
+        wishlist=Wishlist.query.get(id)
+        if wishlist is None:
+            obj={'error':'1','data':{},'message':'No such wishlist exist'}
+        else:
+            obj={'error':'null','data':{'wishes':{'title':wishlist.title,'description':wishlist.description,'url':wishlist.url,'thumbnail':wishlist.thumbnail},'message':'sucess'},}
+        return jsonify(obj)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True, port=8080)

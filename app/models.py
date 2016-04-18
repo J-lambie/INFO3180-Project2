@@ -27,15 +27,23 @@ class User(db.Model):
         
 class Wishlist(db.Model):
     __tablename__='wishlist'
-    wishlist_id=db.Column(db.Integer, primary_key=True)
-    user_id=db.Column(db.Integer,db.ForeignKey('user.user_id'))
+    wishlist_id=db.Column(db.Integer, primary_key=True,autoincrement=True)
     title=db.Column(db.String(80))
     url=db.Column(db.String(100))
     description=db.Column(db.String(250))
     thumbnail=db.Column(db.String(100))
-    
+    user_id=db.Column(db.Integer,db.ForeignKey('user.user_id'),autoincrement=False)
 
-
+    def __init__(self,title,url,description,thumbnail,user_id):
+        self.title=title
+        self.url=url
+        self.description=description
+        self.thumbnail=thumbnail
+        self.user_id=user_id
+        
+    def is_authenticated(self):
+        return True
+        
     def get_id(self):
         try:
             return unicode(self.id)  # python 2 support

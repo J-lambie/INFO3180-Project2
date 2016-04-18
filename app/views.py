@@ -52,16 +52,16 @@ def login():
 @app.route('/api/user/<int:id>/wishlist',methods=['POST','GET'])
 def wishlist(id):
     if request.method=='POST':
-        title=request.form['email']
+        title=request.form['title']
         description=request.form['description']
         url=request.form['url']
         thumbnail=request.form['thumbnail']
         obj={'error':'null','data':{'wishes':{'title':title,'description':description,'url':url,'thumbnail':thumbnail},'message':'sucess'},}
-        new_wishlist=Wishlist(title=title,description=description,url=url,thumbnail=thumbnail)
+        new_wishlist=Wishlist(title,description,url,thumbnail,id)
         db.session.add(new_wishlist)
         db.session.commit()
         return jsonify(obj)
-    if request.method=='GET':
+    if request.method =='GET':
         wishlist=Wishlist.query.get(id)
         if wishlist is None:
             obj={'error':'1','data':{},'message':'No such wishlist exist'}

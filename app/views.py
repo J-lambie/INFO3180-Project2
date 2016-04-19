@@ -6,7 +6,7 @@ from models import User,Wishlist
 
 @app.route('/')
 def home():
-    return "I'm home"
+    return render_template("home.html")
 
 @app.route('/api/thumbnails/process', methods=['POST'])
 def thumbnails():
